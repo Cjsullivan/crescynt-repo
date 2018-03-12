@@ -33,3 +33,81 @@ ggplot(mpg, aes(x = hwy, y = cty, size = class, color = fl)) + geom_point()
 ```{r}
 ggplot(mpg, aes(x = displ, y = hwy)) + geom_point(alpha = 0.1, color ="dark green")
 ```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) + geom_point() + facet_wrap( ~ manufacturer)
+
+```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) + geom_point() + facet_wrap( ~ manufacturer)
+```
+```{r}
+
+
+```
+
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) + geom_point() + facet_wrap( ~ manufacturer) +
+  theme_wsj()
+```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) + geom_smooth() + facet_wrap( ~ manufacturer)
+                                                                                  )
+```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) + geom_point() + facet_wrap( ~ manufacturer, ncol = 5) +
+  theme_bw()
+
+                  
+```
+
+```{r}
+ggplot(mpg, aes(x = drv, y = hwy)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_smooth()
+```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()+ geom_smooth(method = "lm")
+```
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy)) +
+  geom_point()+ 
+  geom_smooth(method = "lm") +
+  labs(title = "Relationship between engine size and highway mileage (mpg)",
+       x = "Engine Size (liter displaced)",
+       y = "Highway mileage (miles per gallon)") +
+  theme_bw() +
+  theme (text = element_text(size =16))
+  
+
+```
+
+```{r}
+ggplot(mpg, aes (x = fl)) +
+  geom_bar()
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+ggplot(mpg, aes (x = fl, fill = class)) +
+  geom_bar(position = "dodge")
+```
+
+```{r}
+myplot <- ggplot(mpg, aes (x = fl, fill = class)) +
+  geom_bar(position = "dodge")
+
+ggsave("example_plot.png", plot = myplot, width = 15, height =15, units ="cm", device = "png")
+```
+
