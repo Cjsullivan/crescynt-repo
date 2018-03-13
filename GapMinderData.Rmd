@@ -9,10 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+##load packages
+
 ```{r}
 library(tidyverse)
 ```
-
+##Gapminder dataset
 ```{r}
 gapminder <- read_csv("https://raw.githubusercontent.com/jules32/2017-11-30-MBARI/gh-pages/data/gapminder.csv")
 ```
@@ -55,6 +57,7 @@ summary(gapminder)
 library(skimr)
 skim(gapminder)
 ```
+##dplyer
 
 ```{r}
 dplyr::filter(gapminder, country == "China")
@@ -86,6 +89,106 @@ select(gapminder, -continent) %>%
 ```{r}
 gapminder %>% 
   mutate(gdp = gdpPercap * pop)
+```
+
+```{r}
+gapminder %>% 
+  mutate(gdp = gdpPercap * pop) %>%
+arrange(desc(gdp))
+
+```
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  mutate(gdp = gdpPercap * pop, max_gdp = max(gdp)) %>%
+  ungroup()
+```
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  mutate(gdp = pop * gdpPercap) %>%
+  summarize(max_gdp = max(gdp))
+```
+##Join
+```{r}
+co2 <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/co2.csv")
+```
+
+```{r}
+head(co2)
+summary(co2)
+```
+
+```{r}
+gapminder %>% 
+  filter(year == 2007)
+
+```
+```{r}
+gap_2007 <- gapminder %>%
+  filter(year == 2007)
+```
+```{r}
+left_join(gap_2007, co2, by = "country")
+```
+
+```{r}
+right_join(gap_2007, co2, by = "country")
+```
+
+##tidyr
+
+```{r}
+AirPassengers
+```
+
+```{r}
+tidyr::gather(AirPassengers, month, passenger)
+```
+This did not work, over it
+
+```{r}
+gap_wide <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv")
+```
+```{r}
+gap_wide %>%
+  gather(observation, observ_value)
+```
+but want to keep country and continent untouched
+
+```{r}
+gap_wide %>%
+  gather(observation, observ_value, -country, -continent)
+```
+now want to seperate further
+
+```{r}
+gap_wide %>%
+  gather(observation, observ_value, -country, -continent) %>%
+  separate(observation, into = c("obs_type", "year"), sep = "_")
+```
+now make year an integral
+
+```{r}
+gap_wide %>%
+  gather(observation, observ_value, -country, -continent) %>%
+  separate(observation, into = c("obs_type", "year"), sep = "_", convert = TRUE)
+```
+
+```{r}
+gap_better <- gap_wide %>%
+  gather(observation, observ_value, -country, -continent) %>%
+  separate(observation, into = c("obs_type", "year"), sep = "_", convert = TRUE)
+
+```
+
+```{r}
+unique(gap_better$obs_type)
+```
+
+```{r}
+gap_better %>%
+  spread(obs_type, observ_value)
 ```
 
 ```{r}
